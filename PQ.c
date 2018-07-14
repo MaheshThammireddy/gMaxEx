@@ -2,7 +2,6 @@
 #include<malloc.h>
 
 #define MAX_SIZE 50
-
 #define left(i) 2*i+1
 #define right(i) 2*i+2
 #define parent(i) (i-1)/2
@@ -14,11 +13,8 @@ void swap(int*a , int*b)
     *b=temp;
     
 }
-
 int arr[MAX_SIZE];
 int gSize=0;
-
-
 int insertKey(int key);
 int decreaseKey(int i , int key);
 int getMin();
@@ -44,7 +40,6 @@ int insertKey(int key)
     
     
 }
-
 int decreaseKey(int i , int key)
 {
     arr[i]=key;
@@ -57,12 +52,10 @@ int decreaseKey(int i , int key)
     }
     
 }
-
 int getMin()
 {
     return arr[0];
 }
-
 void minHeapify(int i)
 {
     int smallest=i;
@@ -82,7 +75,6 @@ void minHeapify(int i)
     }
     
 }
-
 int extractMin()
 {
     if(gSize==0)
@@ -109,10 +101,7 @@ void deleteKey(int i)
     
 }
 
-
 /************PQ**************/
-
-
 int main()
 {
     
