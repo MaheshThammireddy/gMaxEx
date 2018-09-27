@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <malloc.h>
+
+void swap(int* a,int* b)
+{
+    
+    int temp=*a;
+    *a=*b;
+    *b=temp;
+    
+}
+
+
+int partition(int l , int h , int a[])
+{
+    
+    int i=0,j=l-1;
+    int pivot=a[h];
+    
+    for(i=l;i<h;i++)
+    {
+        
+        if(a[i]<= pivot)
+        {
+            j++;
+            swap(&a[i],&a[j]);
+            
+            
+        }
+        
+    }
+    
+    
+    swap(&a[j+1],&a[h]);
+    
+    return j+1;
+    
+}
+
+void QuickSort (int l , int h, int a[] )
+{
+    
+    int p;
+    if(l<h)
+    {
+        
+        p=partition (l,h,a);
+        
+        QuickSort(l,p-1,a);
+        QuickSort(p+1,h,a);
+        
+        
+        
+    }
+    
+}

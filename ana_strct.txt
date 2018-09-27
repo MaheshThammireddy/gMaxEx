@@ -1,0 +1,155 @@
+#include<stdio.h>
+#include<string.h>
+
+
+#define STR_SIZE 20
+#define MAX_STRING 100
+#define NO_OF_CHARS 256
+
+
+
+typedef struct _node{
+    
+    char str[STR_SIZE];
+    int hash;
+    int count;
+    
+}node;
+
+node data[MAX_STRING];
+
+int areAnagram(char* str1, char* str2)
+{
+    
+    int count[NO_OF_CHARS] = {0};
+    int i;
+ 
+    
+    for (i = 0; str1[i] && str2[i];  i++)
+    {
+        count[str1[i]]++;
+        count[str2[i]]--;
+    }
+ 
+    
+    if (str1[i] || str2[i])
+      return 0;
+ 
+    
+    for (i = 0; i < NO_OF_CHARS; i++)
+        if (count[i])
+            return 0;
+     return 1;
+}
+int gethash(char* x) {
+  
+  int len=strlen(x);
+
+   int i, sum;
+   for (sum=0, i=0; i <len; i++)
+     sum += x[i];
+   return sum;
+ }
+
+int count[MAX_STRING]={0};
+
+void findAllAnagrams(char arr[][30], int n)
+{
+    for (int i = 0; i < n; i++)
+        for (int j = i+1; j < n; j++)
+            if (areAnagram(&data[i].str[0], &data[j].str[0])){
+                data[i].count++;
+                data[i].count++;
+               
+            }
+            
+    for(int k=0;k<n;k++)
+        printf("count[%d] : %d\n",k,count[k]);
+                
+}
+
+
+char** splitStrings(char* str ,int* result_cnt)
+{
+  
+    static char splitStrings[10][10]; 
+    int i,j,cnt;
+ 
+    j=0; cnt=0;
+    for(i=0;i<=(strlen(str));i++)
+    {
+       
+        if(str[i]==' '||str[i]=='\0')
+        {
+            splitStrings[cnt][j]='\0';
+            cnt++;  //for next word
+            j=0;    //for next word, init index to 0
+        }
+        else
+        {
+            splitStrings[cnt][j]=str[i];
+            j++;
+        }
+    }
+ 
+    *result_cnt =cnt;
+    for(i=0;i < cnt;i++)
+        printf("%s\n",splitStrings[i]);
+        
+    return splitStrings;
+}
+
+int powr(int x)
+{
+    int i, res = 1;
+
+    for (i = 0; i < x; i++)
+        res = res * 2;
+    return res;
+
+}
+
+/* Driver program to test to pront printDups*/
+int main()
+{
+    char arr[][30] = {"geeksquiz", "geeksforgeeks", "abcd", 
+                    "forgeeksgeeks", "zuiqkeegs","cat","tac","atc"};
+    int n = sizeof(arr)/sizeof(arr[0]);
+    int i;
+    for(i=0;i<8;i++)
+    {
+        printf("hash[%d] : %d\n",i,gethash(&arr[i][0]));
+        strcpy(&data[i].str[0],&arr[i][0]);
+        data[i].hash=gethash(&arr[i][0]);
+    }
+    
+    findAllAnagrams(&arr, n);
+    
+    char s[]="cat the man";
+    int result=0;
+    char **words=splitStrings(s,&result);
+    
+    int answer=0;
+    for(i=0;i<result;i++)
+    {
+        int hash =gethash(words[i]);
+        
+        for(j=0;j<10;j++)
+        {
+            if (hash==data[j].hash)
+            {
+                answer+=data[j].count;
+                break;
+            }
+             //if(strcmp(words[i],&data[j].str[0])==0)
+        }
+       
+    }
+    
+    
+    printf("result: %d" ,powr(answer));    
+    return 0;
+}
+
+
+

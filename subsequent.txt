@@ -1,0 +1,150 @@
+#include<stdio.h>
+#include<string.h>
+#include<malloc.h>
+#include<math.h>
+
+// C++ program to print all possible
+// substrings of a given string
+
+//#include<bits/stdc++.h>
+//using namespace std;
+ //char s[65535][17];
+// Function to print all sub strings
+
+int powr(int x)
+{
+    int i, res = 1;
+
+    for (i = 0; i < x; i++)
+        res = res * 2;
+    return res;
+
+}
+char *my_strcpy(char *destination, char *source)
+{
+    char *start = destination;
+
+    while (*source != '\0')
+    {
+        *destination = *source;
+        destination++;
+        source++;
+    }
+
+    *destination = '\0'; // add '\0' at the end
+    return start;
+}
+
+void swap_str_ptrs(char  **arg1, char  **arg2)
+{
+     char *tmp = *arg1;
+    *arg1 = *arg2;
+    *arg2 = tmp;
+}
+
+void quicksort_strs(char *args[], unsigned int len)
+{
+    unsigned int i, pvt = 0;
+
+    if (len <= 1)
+        return;
+
+    // swap a randomly selected value to the last node
+    swap_str_ptrs(args + 0, args + len - 1);
+
+    // reset the pivot index to zero, then scan
+    for (i = 0; i<len - 1; ++i)
+    {
+        if (strcmp(args[i], args[len - 1]) < 0)
+            swap_str_ptrs(args + i, args + pvt++);
+    }
+
+    // move the pivot value into its place
+    swap_str_ptrs(args + pvt, args + len - 1);
+
+    // and invoke on the subsequences. does NOT include the pivot-slot
+    quicksort_strs(args, pvt++);
+    quicksort_strs(args + pvt, len - pvt);
+}
+
+ char** buildSubsequences(char* s, int* result_count) {
+
+
+     static char* a[66535];
+
+     int m = 0;
+
+     for (m = 0; m < 66535; m++)
+         a[m] = (char*)malloc(sizeof(char)* 17);
+     int len = strlen(s);
+
+     static char str[66535][16];
+     int size = powr(len);
+     int i, j;
+     int k = 0,n=0;
+
+     for (i = 0; i<size; i++)
+     {
+         k = 0;
+         for (j = 0; j<len; j++)
+         {
+             if (i& (1 << j))
+                 str[i][k++] = s[j];
+
+         }
+         str[i][k] = '\0';
+
+         if (i != 0)
+         {
+             memcpy(a[n], &str[i][0], 17);
+             n++;
+         }
+         
+         //printf("%s", str[i][0]);
+     }
+
+     *result_count = n;
+     char temp[17];
+
+     quicksort_strs(a, n);
+#if 0
+     for (i = 0; i < n - 1; ++i)
+     {
+         for (j = i + 1; j<n; ++j)
+         {
+             if (strcmp(a[i], a[j])>0)
+             {
+                 my_strcpy(temp, a[i]);
+                 my_strcpy(a[i], a[j]);
+                 my_strcpy(a[j], temp);
+             }
+         }
+     }
+#endif
+
+     return a;
+
+
+
+ }
+
+ int main()
+ {
+     
+     char* s = "abcde";
+
+     int result_count;
+     char** result = buildSubsequences(s, &result_count);
+
+     for (int i = 0; i < result_count; i++) {
+         printf("%s", *(result + i));
+
+         if (i != result_count - 1) {
+             printf( "\n");
+         }
+     }
+
+     printf("\n");
+
+     return 0;
+ }
